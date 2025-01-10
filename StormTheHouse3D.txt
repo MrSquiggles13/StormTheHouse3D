@@ -64,7 +64,8 @@ UP NEXT:
     - menus: starting menu game over menu and a buy menu
     - enemies: create impl class for enemies, equip weapons, have dynamic stats etc
     - ~BUG~ Impact decal interferes with hit markers for enemies *FIXED*
-    - Github you bitch
+    - ~BUG~ Player's current weapon a part of collision mesh and interferes with movement and collisions
+    - Github you bitch *DONE*
 
 Multiplayer?:
 

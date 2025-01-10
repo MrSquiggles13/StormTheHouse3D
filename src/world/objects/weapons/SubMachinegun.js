@@ -45,5 +45,8 @@ export default class SubMachinegun extends Weapon {
 
     reloadAnimation() {
 
+        const originalPosition = this.mesh.position.clone();
+        const originalRotation = this.mesh.rotation.clone();
+
     }
 }
