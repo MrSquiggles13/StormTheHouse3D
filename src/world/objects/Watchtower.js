@@ -65,7 +65,7 @@ class Watchtower {
 
     // Check if the player is on the platform
     checkPlayerCollisionPlatform(player) {
-        const playerBox = new THREE.Box3().setFromObject(player.mesh);
+        const playerBox = new THREE.Box3().setFromObject(player.bodyCollider);
     
         if (this.platformBox.intersectsBox(playerBox)) {
             // Check if the player is above the platform and falling onto it
@@ -97,7 +97,7 @@ class Watchtower {
     }
 
     checkPlayerCollisionWalls(player) {
-        const playerBox = new THREE.Box3().setFromObject(player.mesh);
+        const playerBox = new THREE.Box3().setFromObject(player.bodyCollider);
     
         for (const wall of this.walls) {
             const wallBox = new THREE.Box3().setFromObject(wall);

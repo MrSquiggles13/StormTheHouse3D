@@ -18,6 +18,11 @@ class Player {
         this.mesh = new THREE.Mesh(this.geometry, this.material);
         this.scene.add(this.mesh);
 
+        const bodyGeometry = new THREE.BoxGeometry(0.5, 2.8, 0.5); // Adjust dimensions as needed
+        const bodyMaterial = new THREE.MeshBasicMaterial({ visible: false }); // Invisible collider
+        this.bodyCollider = new THREE.Mesh(bodyGeometry, bodyMaterial);
+        this.mesh.add(this.bodyCollider);
+
         // Movement speed and camera control sensitivity
         this.speed = 5;
         this.mouseSensitivity = 0.002;
