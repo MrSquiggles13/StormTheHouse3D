@@ -1,0 +1,71 @@
+StormTheHouse3D
+
+Map:
+
+- Basic Landscape
+- Less tiles textures
+- Make Bodies of Water
+- Foliage that doesnt kill my computer
+- House model
+
+|----------------
+
+Menu:
+
+- Main menu *play *settings *progress?/statistics *quit
+- In game menu *settings *pause
+- buy menu *tabs for different upgrades 
+
+|------------------------
+
+Player:
+- watch tower/char model
+- mouse cursor crosshair (fires from watchtower)
+- free camera movement
+- can select unit to use to fire with
+- meelee spartan char ultimate that can charge out be used for a duration then is beamed up my aliens
+
+|-----------------------
+
+Enemy:
+
+- Stick figure models
+- Basic animations
+- Basic AI
+- Different enemy types
+
+|-------------------------
+
+Notes:
+when in free camera can shoot with watchtower main char only and select other characters, if highlighting something/someone
+
+start with watchtower, character, wall, basic enemies, first person only, no animations, no upgrades, no menu
+
+TO START:
+    - watchtower: giant block *DONE*
+    - player: basic capsule *DONE*
+    - gun: skinny cylinder *DONE* **added animation
+    - projectiles: tiny cylinder *DONE*
+    - enemies: basic capsule *DONE* **added waves and attack on wall
+    - landscape: flat rectangle *DONE*
+    - wall: thick upright rectangle *DONE*
+    - hit feedback: flashing when hit *DONE*
+    - aiming: can zoom in to ADS with scope overlay *DONE*
+    - skybox: added a, well, a skybox *DONE*
+    - health bar: added health bars for enemies and wall *DONE*
+    - UI: screen info for bullet capacity, money, and wall health *DONE*
+ 
+    - clubs: short fat cylinder w/ animation for basic enemy
+    - house: giant block readjust wall and tower to compinsate for angles
+
+UP NEXT:
+    - weapons: create an impl weapon class and create multiple weapons *DONE*
+    - decouple: refactor files to be more modular coherent and consistent
+    - menus: starting menu game over menu and a buy menu
+    - enemies: create impl class for enemies, equip weapons, have dynamic stats etc
+    - ~BUG~ Impact decal interferes with hit markers for enemies *FIXED*
+    - Github you bitch
+
+Multiplayer?:
+
+have someone on other side trying to send troops towards you while you defend and do the same
