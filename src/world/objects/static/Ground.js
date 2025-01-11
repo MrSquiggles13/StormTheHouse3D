@@ -7,7 +7,6 @@ class Ground {
             new THREE.MeshStandardMaterial({ color: 0x808080 })
         );
         this.mesh.position.set(0, 0, 0);
-
         this.mesh.length = 200
     }
 }

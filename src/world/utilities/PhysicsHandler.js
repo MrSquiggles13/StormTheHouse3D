@@ -2,15 +2,15 @@
 
 class PhysicsHandler {
     constructor() {
-        this.objects = [];
+        this.entities = [];
         this.gravity = new THREE.Vector3(0, -9.8, 0);
     }
 
     update(delta) {
-        for (const obj of this.objects) {
-            if (!obj.isStatic) {
-                obj.velocity.add(this.gravity.clone().multiplyScalar(delta));
-                obj.position.add(obj.velocity.clone().multiplyScalar(delta));
+        for (const ent of this.entities) {
+            if (!ent.isStatic) {
+                ent.velocity.add(this.gravity.clone().multiplyScalar(delta));
+                ent.position.add(ent.velocity.clone().multiplyScalar(delta));
             }
         }
     }

@@ -52,7 +52,18 @@ Enemy:
 Notes:
 when in free camera can shoot with watchtower main char only and select other characters, if highlighting something/someone
 
-start with watchtower, character, wall, basic enemies, first person only, no animations, no upgrades, no menu
+start with watchtower, character, wall, basic enemies, first person only, no animations, no upgrades, no menu *DONE*
+
+bullet spread can be kind of like gravity where over time
+the bullet spread is reduced to zero but increases up to a threshold 
+
+player should have camera object since perspective is based on the player
+
+world should handle instantiating helpers and placing objects into the world
+
+physics should be handled centrally by a physics handler
+
+entities (objects) should have an extendable class and be conherent with the physics handler
 
 FINISHED:
     - watchtower: giant block *DONE*
@@ -74,12 +85,14 @@ FINISHED:
     - Github you bitch *DONE*
 
 CURRENT:
+    - decouple: refactor files to be more modular coherent and consistent
+        - scene only handled by World
+
+    - physics handler: add gravity and restructure the collision detections
     - reload anims: add mag that falls out and new one inserted
     
 
 UP NEXT:
-    - decouple: refactor files to be more modular coherent and consistent
-
     - clubs: short fat cylinder w/ animation for basic enemy
     - enemies: create impl class for enemies, equip weapons, have dynamic stats etc
     - add enemies: make some alternitive enemies, have a pool of atleast 3
@@ -87,13 +100,8 @@ UP NEXT:
     - house: giant block readjust wall and tower to compinsate for angles
     - structures & landscape: more dynamic ground and redo wall to have look throughs and better texture
 
-    - redo movement: add gravity and restructure the collision detections, add different movement for player and enemies
-
     - menus: starting menu game over menu and a buy menu
 
-
-Random Note: bullet spread can be kind of like gravity where over time
-the bullet spread is reduced to zero but increases up to a threshold 
 
 Multiplayer?:
 

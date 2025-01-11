@@ -33,7 +33,7 @@ class Enemy {
         this.hasReachedWall = false;
 
         this.health = 5;
-        this.healthBar = new HealthBar(this.scene, this.mesh, this.health, 2, 0.5);
+        this.healthBar = new HealthBar(this.mesh, this.health, 2, 0.5);
     }
 
     // Method to move toward the target (the wall)

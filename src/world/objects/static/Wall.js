@@ -1,8 +1,8 @@
 import * as THREE from 'three';
-import { HealthBar } from '../components/Healthbar.js';
+import { HealthBar } from '../../components/Healthbar.js';
 
 class Wall {
-    constructor(scene) {
+    constructor() {
         // Create a simple wall
         const geometry = new THREE.BoxGeometry(25, 3, 0.5);
         this.originalMaterial = new THREE.MeshStandardMaterial({ color: 0x808080 });
@@ -15,7 +15,7 @@ class Wall {
         this.max_health = this.health
         this.health_ui = document.getElementById("health-bar")
         this.health_ui.style.width = `${(this.health/this.max_health) * 100}%`
-        this.healthBar = new HealthBar(scene, this.mesh, this.health, 20, 1)
+        this.healthBar = new HealthBar(this.mesh, this.health, 20, 1)
     }
 
     // Method to reduce wall health

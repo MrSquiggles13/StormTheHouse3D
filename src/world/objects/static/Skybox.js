@@ -1,9 +1,9 @@
 import * as THREE from 'three';
 
 class Skybox {
-    constructor(scene) {
+    constructor() {
         const loader = new THREE.CubeTextureLoader();
-        const texture = loader.load([
+        this.texture = loader.load([
             '/assets/skybox/px.png',
             '/assets/skybox/nx.png',
             '/assets/skybox/py.png',
@@ -11,7 +11,6 @@ class Skybox {
             '/assets/skybox/pz.png',
             '/assets/skybox/nz.png',
         ]);
-        scene.background = texture;
     }
 }
 

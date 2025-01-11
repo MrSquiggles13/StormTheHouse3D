@@ -1,8 +1,7 @@
 import * as THREE from 'three';
 
 class HealthBar {
-    constructor(scene, targetObject, health, width = 1, height = 0.1) {
-        this.scene = scene;
+    constructor(targetObject, health, width = 1, height = 0.1) {
         this.targetObject = targetObject;
 
         // Create the background of the health bar

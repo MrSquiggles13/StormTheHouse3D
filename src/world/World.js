@@ -1,11 +1,11 @@
 import * as THREE from 'three';
 import { Enemy } from './objects/Enemy.js';
 import { Player } from './objects/Player.js';
-import { Ground } from './objects/Ground.js';
+import { Ground } from './objects/static/Ground.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { Watchtower } from './objects/Watchtower.js';
-import { Skybox } from './objects/Skybox.js';
-import { Wall } from './objects/Wall.js';
+import { Watchtower } from './objects/static/Watchtower.js';
+import { Skybox } from './objects/static/Skybox.js';
+import { Wall } from './objects/static/Wall.js';
 import { EnemyHandler } from './utilities/EnemyHandler.js';
 import "https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.umd.js";
 
@@ -30,13 +30,6 @@ class World {
         this.freeCameraControls.dampingFactor = 0.05;
         this.freeCameraControls.screenSpacePanning = false;
 
-        // Resize handling
-        window.addEventListener('resize', () => {
-            this.camera.aspect = window.innerWidth / window.innerHeight;
-            this.camera.updateProjectionMatrix();
-            this.renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-
         // Add lights
         const light = new THREE.AmbientLight(0x9f9f9f, 0.5);
         this.scene.add(light);
@@ -45,7 +38,8 @@ class World {
         directionalLight.position.set(10, 20, 10);
         this.scene.add(directionalLight);
 
-        this.skybox = new Skybox(this.scene);
+        this.skybox = new Skybox();
+        this.scene.background = this.skybox.texture;
 
         // Initialize player and enemies
         this.player = new Player(this.scene, this.camera);
@@ -61,7 +55,7 @@ class World {
         this.player.mesh.position.y = this.watchtower.platformBox.max.y + this.player.mesh.scale.y + 0.2;
         this.player.mesh.position.z = this.watchtower.towerGroup.position.z;
 
-        this.wall = new Wall(this.scene);
+        this.wall = new Wall();
         this.wall.mesh.position.z = (this.ground.mesh.length / 2) - 30;
         this.wall.mesh.position.y = 1.5
         this.scene.add(this.wall.mesh);
@@ -120,6 +114,12 @@ class World {
         window.addEventListener('wheel', (e) => {
             if (this.activeCamera === this.freeCamera) return;            
             this.player.smoothZoom(e.deltaY)
+        });
+
+        window.addEventListener('resize', () => {
+            this.camera.aspect = window.innerWidth / window.innerHeight;
+            this.camera.updateProjectionMatrix();
+            this.renderer.setSize(window.innerWidth, window.innerHeight);
         });
 
     }
