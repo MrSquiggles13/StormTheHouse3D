@@ -23,7 +23,20 @@ Player:
 - mouse cursor crosshair (fires from watchtower)
 - free camera movement
 - can select unit to use to fire with
-- meelee spartan char ultimate that can charge out be used for a duration then is beamed up my aliens
+- meelee spartan char ultimate that can charge out be used for a duration then is beamed up by aliens
+
+|-----------------------
+
+Weapons:
+- attachments (scopes, grips etc)
+- variable recoil and bullet spread
+
+|-----------------------
+
+Helpers:
+- have own weapons and gear
+- can be upgraded themselved or upgrade/trade out gear
+- can be individually controlled
 
 |-----------------------
 
@@ -41,7 +54,7 @@ when in free camera can shoot with watchtower main char only and select other ch
 
 start with watchtower, character, wall, basic enemies, first person only, no animations, no upgrades, no menu
 
-TO START:
+FINISHED:
     - watchtower: giant block *DONE*
     - player: basic capsule *DONE*
     - gun: skinny cylinder *DONE* **added animation
@@ -54,18 +67,33 @@ TO START:
     - skybox: added a, well, a skybox *DONE*
     - health bar: added health bars for enemies and wall *DONE*
     - UI: screen info for bullet capacity, money, and wall health *DONE*
- 
-    - clubs: short fat cylinder w/ animation for basic enemy
-    - house: giant block readjust wall and tower to compinsate for angles
+
+    - weapons: create an impl weapon class and create multiple weapons *DONE*
+    - ~BUG~ Impact decal interferes with hit markers for enemies *FIXED*
+    - ~BUG~ Player's current weapon a part of collision mesh and interferes with movement and collisions *FIXED*
+    - Github you bitch *DONE*
+
+CURRENT:
+    - reload anims: add mag that falls out and new one inserted
+    
 
 UP NEXT:
-    - weapons: create an impl weapon class and create multiple weapons *DONE*
     - decouple: refactor files to be more modular coherent and consistent
-    - menus: starting menu game over menu and a buy menu
+
+    - clubs: short fat cylinder w/ animation for basic enemy
     - enemies: create impl class for enemies, equip weapons, have dynamic stats etc
-    - ~BUG~ Impact decal interferes with hit markers for enemies *FIXED*
-    - ~BUG~ Player's current weapon a part of collision mesh and interferes with movement and collisions
-    - Github you bitch *DONE*
+    - add enemies: make some alternitive enemies, have a pool of atleast 3
+
+    - house: giant block readjust wall and tower to compinsate for angles
+    - structures & landscape: more dynamic ground and redo wall to have look throughs and better texture
+
+    - redo movement: add gravity and restructure the collision detections, add different movement for player and enemies
+
+    - menus: starting menu game over menu and a buy menu
+
+
+Random Note: bullet spread can be kind of like gravity where over time
+the bullet spread is reduced to zero but increases up to a threshold 
 
 Multiplayer?:
 

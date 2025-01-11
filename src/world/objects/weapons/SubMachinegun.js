@@ -48,5 +48,29 @@ export default class SubMachinegun extends Weapon {
         const originalPosition = this.mesh.position.clone();
         const originalRotation = this.mesh.rotation.clone();
 
+        const tiltUpTween = new TWEEN.Tween(this.mesh.rotation)
+            .to({ x: originalRotation.y + 1 }, 400)
+            .easing(TWEEN.Easing.Quadratic.Out)
+        
+        const pullBackTween = new TWEEN.Tween(this.mesh.position)
+            .to({ z: originalPosition.z + 0.4 }, 400)
+            .easing(TWEEN.Easing.Quadratic.Out)
+
+        const tiltDownTween = new TWEEN.Tween(this.mesh.rotation)
+            .delay(200)
+            .to({ x: originalRotation.y }, 300)
+            .easing(TWEEN.Easing.Quadratic.In)
+
+        const pullForwardTween = new TWEEN.Tween(this.mesh.position)
+            .delay(200)
+            .to({ z: originalPosition.z }, 300)
+            .easing(TWEEN.Easing.Quadratic.In)
+
+        tiltUpTween.chain(tiltDownTween)
+        pullBackTween.chain(pullForwardTween)
+
+        tiltUpTween.start();
+        pullBackTween.start();
+
     }
 }

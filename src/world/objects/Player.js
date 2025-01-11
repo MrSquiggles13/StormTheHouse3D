@@ -45,7 +45,7 @@ class Player {
         this.isMovingRight = false;
 
         this.weapons = { rifle: new Rifle(this.scene, this.camera), pistol: new Pistol(this.scene, this.camera), smg: new SubMachinegun(this.scene, this.camera) };
-        this.equippedWeapon = this.weapons["smg"]
+        this.equippedWeapon = this.weapons["pistol"]
         this.isShooting = false
 
         this.camera.add(this.equippedWeapon.mesh)
