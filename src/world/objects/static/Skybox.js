@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-class Skybox {
+export default class Skybox {
     constructor() {
         const loader = new THREE.CubeTextureLoader();
         this.texture = loader.load([
@@ -13,5 +13,3 @@ class Skybox {
         ]);
     }
 }
-
-export { Skybox };

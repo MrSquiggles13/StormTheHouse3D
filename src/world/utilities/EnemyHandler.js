@@ -1,9 +1,8 @@
 import * as THREE from 'three';
-import { Enemy } from '../objects/Enemy.js';
+import Enemy from '../objects/Enemy.js';
 
-class EnemyHandler {
-    constructor(scene, wall) {
-        this.scene = scene;
+export default class EnemyHandler {
+    constructor(wall) {
         this.enemies = [];
         this.enemyCount = 5; // Initial number of enemies for the first wave
         this.waveTimeLimit = 180; // 3 minutes in seconds
@@ -49,7 +48,7 @@ class EnemyHandler {
         // Ensure no overlap
         const spawnPosition = new THREE.Vector3(x, y, z);
 
-        const enemy = new Enemy(this.scene, spawnPosition);
+        const enemy = new Enemy(spawnPosition);
         this.enemies.push(enemy);
     }
 
@@ -74,7 +73,7 @@ class EnemyHandler {
             }
 
             if (enemy.health <= 0) {
-                this.scene.remove(enemy.mesh);
+                this.scene.remove(enemy.mesh); // signal mesh destroyed
                 this.enemies.splice(index, 1);
             }
     
@@ -89,5 +88,3 @@ class EnemyHandler {
         this.enemyCount += 1; // Add one more enemy for the next wave
     }
 }
-
-export { EnemyHandler };

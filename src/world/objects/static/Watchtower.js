@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
-class Watchtower {
-    constructor(scene) {
+export default class Watchtower {
+    constructor() {
         // Create the tower group
         this.towerGroup = new THREE.Group();
 
@@ -55,10 +55,7 @@ class Watchtower {
             this.towerGroup.add(wall);
             this.walls.push(wall);
         }
-
-        // Add the tower to the scene
         
-
         // Collision box for the platform
         this.platformBox = new THREE.Box3().setFromObject(platform);
     }
@@ -129,5 +126,3 @@ class Watchtower {
         }
     }
 }
-
-export { Watchtower };

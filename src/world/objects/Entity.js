@@ -1,5 +1,7 @@
+import EventEmitter from 'events';
 
-
-class Entity {
-    
+export default class Entity extends EventEmitter {
+    constructor() {
+        super();
+    }
 }

@@ -1,6 +1,6 @@
 
 
-class PhysicsHandler {
+export default class PhysicsHandler { // movement, gravity, and collisions
     constructor() {
         this.entities = [];
         this.gravity = new THREE.Vector3(0, -9.8, 0);

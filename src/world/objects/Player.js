@@ -1,11 +1,11 @@
 import * as THREE from 'three';
-import { Rifle } from './weapons/Rifle.js';
-import { Pistol } from './weapons/Pistol.js';
+import Rifle from './weapons/Rifle.js';
+import Pistol from './weapons/Pistol.js';
 import SubMachinegun from './weapons/SubMachinegun.js';
+import Entity from './Entity.js';
 
-class Player {
-    constructor(scene, camera) {
-        this.scene = scene;
+export default class Player extends Entity {
+    constructor(camera) {
         this.camera = camera;
 
         this.money = 0;
@@ -16,7 +16,6 @@ class Player {
         this.geometry = new THREE.CapsuleGeometry(0.5, 3, 4, 8);
         this.material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
         this.mesh = new THREE.Mesh(this.geometry, this.material);
-        this.scene.add(this.mesh);
 
         const bodyGeometry = new THREE.BoxGeometry(0.5, 2.8, 0.5); // Adjust dimensions as needed
         const bodyMaterial = new THREE.MeshBasicMaterial({ visible: false }); // Invisible collider
@@ -35,7 +34,7 @@ class Player {
 
         this.pitchObject.add(this.camera);  // Camera attached to pitchObject
         this.yawObject.add(this.pitchObject);  // pitchObject attached to yawObject
-        this.mesh.add(this.yawObject);  // Add yawObject to the scene (root of the player's head)
+        this.mesh.add(this.yawObject);  // Add yawObject to the player mesh (root of the player's head)
         this.yawObject.position.set(0, 1.2, 0);  // Position the yawObject in front of the player
 
         // Movement control state
@@ -44,7 +43,7 @@ class Player {
         this.isMovingLeft = false;
         this.isMovingRight = false;
 
-        this.weapons = { rifle: new Rifle(this.scene, this.camera), pistol: new Pistol(this.scene, this.camera), smg: new SubMachinegun(this.scene, this.camera) };
+        this.weapons = { rifle: new Rifle(this.camera), pistol: new Pistol(this.camera), smg: new SubMachinegun(this.camera) };
         this.equippedWeapon = this.weapons["pistol"]
         this.isShooting = false
 
@@ -162,9 +161,9 @@ class Player {
         this.isShooting = false
     }
 
-    shoot() {
+    shoot(children) {
         if (!this.isShooting) return;
-        const hit = this.equippedWeapon.shoot();
+        const hit = this.equippedWeapon.shoot(children);
 
         // Check if the hit object is an enemy
         if (hit && hit.object.name === 'enemy') {
@@ -179,7 +178,7 @@ class Player {
 
         if (this.equippedWeapon.fullAuto) {
             setTimeout(() => {
-                this.shoot();
+                this.shoot(children);
             }, this.equippedWeapon.shootCooldown * 1000);
         }
 
@@ -244,10 +243,6 @@ class Player {
         if (this.mesh.position.y < 0.5) {
             this.mesh.position.y = 0.5;
         }
-
-
     }
 
 }
-
-export { Player };

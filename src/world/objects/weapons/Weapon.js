@@ -1,8 +1,7 @@
 import * as THREE from 'three';
 
 export default class Weapon {
-    constructor(scene, camera, {maxBullets, bulletSpeed, bulletDamage, reloadTime, shootCooldown, fullAuto = false, spread = 0, canZoom = false, zoomFOV = 0}) {
-        this.scene = scene;
+    constructor(camera, {maxBullets, bulletSpeed, bulletDamage, reloadTime, shootCooldown, fullAuto = false, spread = 0, canZoom = false, zoomFOV = 0}) {
         this.camera = camera;
 
         // Shooting variables
@@ -28,7 +27,7 @@ export default class Weapon {
 
     }
 
-    shoot() {
+    shoot(children) {
         const currentTime = performance.now() / 1000;
         if (currentTime - this.lastShotTime < this.shootCooldown || this.reloading) return null;
 
@@ -51,7 +50,7 @@ export default class Weapon {
 
         raycaster.ray.direction.copy(spreadDirection);
 
-        const intersects = raycaster.intersectObjects(this.scene.children, true);
+        const intersects = raycaster.intersectObjects(children, true); // sent up to collisions
 
         this.createMuzzleFlash();
         this.createBulletTracer(spreadDirection);

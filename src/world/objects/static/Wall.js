@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { HealthBar } from '../../components/Healthbar.js';
 
-class Wall {
+export default class Wall {
     constructor() {
         // Create a simple wall
         const geometry = new THREE.BoxGeometry(25, 3, 0.5);
@@ -43,5 +43,3 @@ class Wall {
         return new THREE.Box3().setFromObject(this.mesh);
     }
 }
-
-export { Wall };

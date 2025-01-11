@@ -2,9 +2,9 @@ import * as THREE from 'three';
 import "https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.umd.js";
 import Weapon from "./Weapon.js"
 
-class Pistol extends Weapon {
-    constructor(scene, camera) {
-        super(scene, camera, { maxBullets: 17, bulletSpeed: 4, bulletDamage: 2, reloadTime: 1.5, shootCooldown: 0.1 })
+export default class Pistol extends Weapon {
+    constructor(camera) {
+        super(camera, { maxBullets: 17, bulletSpeed: 4, bulletDamage: 2, reloadTime: 1.5, shootCooldown: 0.1 })
 
         // Pistol components
         const barrel = new THREE.BoxGeometry(0.05, 0.10, 0.3);
@@ -102,5 +102,3 @@ class Pistol extends Weapon {
         magDrop.start();
     }
 }
-
-export { Pistol };

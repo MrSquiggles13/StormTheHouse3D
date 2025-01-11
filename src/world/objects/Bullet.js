@@ -1,6 +1,6 @@
 import * as THREE from "three";
 
-class Bullet {
+export default class Bullet {
     constructor(position) {
         this.mesh = new THREE.Mesh(
             new THREE.SphereGeometry(0.2, 8, 8),
@@ -14,5 +14,3 @@ class Bullet {
         this.mesh.position.z -= this.speed * delta;
     }
 }
-
-export { Bullet };

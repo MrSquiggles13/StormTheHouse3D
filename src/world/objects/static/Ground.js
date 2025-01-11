@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-class Ground {
+export default class Ground {
     constructor() {
         this.mesh = new THREE.Mesh(
             new THREE.BoxGeometry(25, 1, 200),
@@ -10,5 +10,3 @@ class Ground {
         this.mesh.length = 200
     }
 }
-
-export { Ground };

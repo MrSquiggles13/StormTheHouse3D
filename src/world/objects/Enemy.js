@@ -1,8 +1,8 @@
 import * as THREE from 'three';
-import { HealthBar } from '../components/Healthbar.js';
+import HealthBar from '../components/Healthbar.js';
 
-class Enemy {
-    constructor(scene, position) {
+export default class Enemy {
+    constructor(position) {
         // Create a basic enemy mesh (capsule shape)
         const geometry = new THREE.CapsuleGeometry(0.5, 3, 8, 16);
         this.originalMaterial = new THREE.MeshStandardMaterial({ color: 0xff0000 });
@@ -18,9 +18,6 @@ class Enemy {
         this.mesh.position.set(
             position.x, position.y, position.z
         );
-
-        // Add the enemy to the scene
-        scene.add(this.mesh);
 
         // Movement speed
         this.speed = 0.08;
@@ -80,5 +77,3 @@ class Enemy {
         }
     }
 }
-
-export { Enemy };

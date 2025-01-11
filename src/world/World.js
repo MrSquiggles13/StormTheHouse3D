@@ -1,15 +1,14 @@
 import * as THREE from 'three';
-import { Enemy } from './objects/Enemy.js';
-import { Player } from './objects/Player.js';
-import { Ground } from './objects/static/Ground.js';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { Watchtower } from './objects/static/Watchtower.js';
-import { Skybox } from './objects/static/Skybox.js';
-import { Wall } from './objects/static/Wall.js';
-import { EnemyHandler } from './utilities/EnemyHandler.js';
+import Player from './objects/Player.js';
+import Ground from './objects/static/Ground.js';
+import OrbitControls from 'three/addons/controls/OrbitControls.js';
+import Watchtower from './objects/static/Watchtower.js';
+import Skybox from './objects/static/Skybox.js';
+import Wall from './objects/static/Wall.js';
+import EnemyHandler from './utilities/EnemyHandler.js';
 import "https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.umd.js";
 
-class World {
+export default class World {
     constructor(container) {
         this.scene = new THREE.Scene();
         this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -42,13 +41,14 @@ class World {
         this.scene.background = this.skybox.texture;
 
         // Initialize player and enemies
-        this.player = new Player(this.scene, this.camera);
+        this.player = new Player(this.camera);
+        this.scene.add(this.player.mesh);
 
         // Add ground
         this.ground = new Ground();
         this.scene.add(this.ground.mesh);
 
-        this.watchtower = new Watchtower(this.scene);
+        this.watchtower = new Watchtower();
         this.watchtower.towerGroup.position.z = (this.ground.mesh.length / 2) - 10;
         this.scene.add(this.watchtower.towerGroup);
 
@@ -60,7 +60,7 @@ class World {
         this.wall.mesh.position.y = 1.5
         this.scene.add(this.wall.mesh);
 
-        this.enemySpawner = new EnemyHandler(this.scene, this.wall);
+        this.enemySpawner = new EnemyHandler(this.wall);
 
         this.addEventListeners();
 
@@ -157,5 +157,3 @@ class World {
         });
     }
 }
-
-export { World };
