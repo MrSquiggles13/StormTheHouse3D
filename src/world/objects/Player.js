@@ -5,7 +5,7 @@ import SubMachinegun from './weapons/SubMachinegun.js';
 import Entity from './Entity.js';
 
 export default class Player extends Entity {
-    constructor(camera) {
+    constructor(scene, camera) {
         super();
         this.camera = camera;
 
@@ -44,7 +44,7 @@ export default class Player extends Entity {
         this.isMovingLeft = false;
         this.isMovingRight = false;
 
-        this.weapons = { rifle: new Rifle(this.camera), pistol: new Pistol(this.camera), smg: new SubMachinegun(this.camera) };
+        this.weapons = { rifle: new Rifle(scene, this.camera), pistol: new Pistol(scene, this.camera), smg: new SubMachinegun(scene, this.camera) };
         this.equippedWeapon = this.weapons["pistol"]
         this.isShooting = false
 
@@ -54,6 +54,16 @@ export default class Player extends Entity {
         this.defaultFOV = 75;    // Default field of view
         this.currentFOV = this.defaultFOV // To lerp zoom
         this.isAiming = false;   // To track whether the player is aiming or not
+
+        this.on('enemy-died', () => { 
+            this.money += 10; 
+            this.money_ui.innerText = `Money: ${this.money}`  // dispatch to ui handler
+        })
+
+        this.on('enemy-hit', (enemy) => {
+            console.log("enemy hit")
+            enemy.takeDamage(this.equippedWeapon.bulletDamage);
+        })
 
     }
 
@@ -162,24 +172,16 @@ export default class Player extends Entity {
         this.isShooting = false
     }
 
-    shoot(children) {
+    
+
+    shoot() {
         if (!this.isShooting) return;
-        const hit = this.equippedWeapon.shoot(children);
 
-        // Check if the hit object is an enemy
-        if (hit && hit.object.name === 'enemy') {
-            hit.object.enemy.takeDamage(this.equippedWeapon.bulletDamage);
+        this.equippedWeapon.shoot();
 
-            if (hit.object.enemy.health <= 0) {
-                this.money += 10;
-                this.money_ui.innerText = `Money: ${this.money}`;
-            }
-
-        }
-
-        if (this.equippedWeapon.fullAuto) {
+        if (this.equippedWeapon.fullAuto) { // handle in weapon class
             setTimeout(() => {
-                this.shoot(children);
+                this.shoot();
             }, this.equippedWeapon.shootCooldown * 1000);
         }
 

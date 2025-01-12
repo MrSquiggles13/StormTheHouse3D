@@ -1,8 +1,10 @@
 import * as THREE from 'three';
 import Enemy from '../objects/Enemy.js';
+import Entity from '../objects/Entity.js';
 
-export default class EnemyHandler {
+export default class EnemyHandler extends Entity {
     constructor(wall) {
+        super()
         this.enemies = [];
         this.enemyCount = 5; // Initial number of enemies for the first wave
         this.waveTimeLimit = 180; // 3 minutes in seconds
@@ -50,6 +52,7 @@ export default class EnemyHandler {
 
         const enemy = new Enemy(spawnPosition);
         this.enemies.push(enemy);
+        this.emit('add', enemy.mesh);
     }
 
     // Update function for spawning waves
@@ -73,7 +76,7 @@ export default class EnemyHandler {
             }
 
             if (enemy.health <= 0) {
-                this.scene.remove(enemy.mesh); // signal mesh destroyed
+                this.emit('remove', enemy.mesh); //
                 this.enemies.splice(index, 1);
             }
     

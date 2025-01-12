@@ -1,8 +1,10 @@
 import * as THREE from 'three';
 import HealthBar from '../components/Healthbar.js';
+import Entity from './Entity.js';
 
-export default class Enemy {
+export default class Enemy extends Entity {
     constructor(position) {
+        super();
         // Create a basic enemy mesh (capsule shape)
         const geometry = new THREE.CapsuleGeometry(0.5, 3, 8, 16);
         this.originalMaterial = new THREE.MeshStandardMaterial({ color: 0xff0000 });
@@ -68,6 +70,7 @@ export default class Enemy {
 
         if (this.health <= 0) {
             this.health = 0;
+            this.emit('enemy-died');
         }
     }
 

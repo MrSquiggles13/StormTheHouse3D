@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import * as TWEEN from '@tweenjs/tween.js';
 import Player from './objects/Player.js';
 import Ground from './objects/static/Ground.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
@@ -6,10 +7,12 @@ import Watchtower from './objects/static/Watchtower.js';
 import Skybox from './objects/static/Skybox.js';
 import Wall from './objects/static/Wall.js';
 import EnemyHandler from './utilities/EnemyHandler.js';
-import "https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.umd.js";
+import Entity from './objects/Entity.js';
+import PhysicsHandler from './utilities/PhysicsHandler.js';
 
-export default class World {
+export default class World extends Entity {
     constructor(container) {
+        super()
         this.scene = new THREE.Scene();
         this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         this.renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -41,7 +44,7 @@ export default class World {
         this.scene.background = this.skybox.texture;
 
         // Initialize player and enemies
-        this.player = new Player(this.camera);
+        this.player = new Player(this.scene, this.camera);
         this.scene.add(this.player.mesh);
 
         // Add ground
@@ -61,6 +64,7 @@ export default class World {
         this.scene.add(this.wall.mesh);
 
         this.enemySpawner = new EnemyHandler(this.wall);
+        this.physicsHandler = new PhysicsHandler(this.scene)
 
         this.addEventListeners();
 
@@ -122,6 +126,9 @@ export default class World {
             this.renderer.setSize(window.innerWidth, window.innerHeight);
         });
 
+        this.on('add', (mesh) => this.scene.add(mesh));
+        this.on('remove', (mesh) => this.scene.remove(mesh));
+
     }
 
     update() {
@@ -137,7 +144,7 @@ export default class World {
 
         this.enemySpawner.update(delta, currentTime);
 
-        TWEEN.update()
+        TWEEN.update({preserve: false})
 
     }
 

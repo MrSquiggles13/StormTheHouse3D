@@ -64,6 +64,7 @@ world should handle instantiating helpers and placing objects into the world
 physics should be handled centrally by a physics handler
 
 entities (objects) should have an extendable class and be conherent with the physics handler
+entities should also be instantiated with position and velocity
 
 FINISHED:
     - watchtower: giant block *DONE*

@@ -1,7 +1,10 @@
 import * as THREE from 'three';
+import Entity from '../Entity';
 
-export default class Weapon {
-    constructor(camera, {maxBullets, bulletSpeed, bulletDamage, reloadTime, shootCooldown, fullAuto = false, spread = 0, canZoom = false, zoomFOV = 0}) {
+export default class Weapon extends Entity {
+    constructor(scene, camera, { maxBullets, bulletSpeed, bulletDamage, reloadTime, shootCooldown, fullAuto = false, spread = 0, canZoom = false, zoomFOV = 0 }) {
+        super()
+        this.scene = scene
         this.camera = camera;
 
         // Shooting variables
@@ -25,13 +28,15 @@ export default class Weapon {
         this.canZoom = canZoom
         this.zoomFOV = zoomFOV
 
+        this.on('impact', (point) => this.createImpactEffect(point));
+
     }
 
-    shoot(children) {
+    shoot() {
         const currentTime = performance.now() / 1000;
         if (currentTime - this.lastShotTime < this.shootCooldown || this.reloading) return null;
 
-        if (this.bulletCount <= 0){
+        if (this.bulletCount <= 0) {
             this.reload();
             return null;
         }
@@ -39,7 +44,7 @@ export default class Weapon {
         // Raycasting
         const raycaster = new THREE.Raycaster();
         raycaster.setFromCamera(new THREE.Vector2(0, 0), this.camera);
-        
+
 
         // // Apply random spread
         const spreadDirection = new THREE.Vector3(
@@ -49,33 +54,18 @@ export default class Weapon {
         ).normalize();
 
         raycaster.ray.direction.copy(spreadDirection);
-
-        const intersects = raycaster.intersectObjects(children, true); // sent up to collisions
+        
+        this.emit('shot', raycaster);
 
         this.createMuzzleFlash();
         this.createBulletTracer(spreadDirection);
 
         this.bulletCount--;
-        this.bullet_ui.innerText = `Bullets: ${this.bulletCount} / ${this.maxBullets}`;
+        this.bullet_ui.innerText = `Bullets: ${this.bulletCount} / ${this.maxBullets}`; // ui handler
         this.lastShotTime = currentTime;
-
-        if (intersects.length > 0) {
-
-            for (let inter in intersects) {
-                if(intersects[inter].object.name !== 'impact' && intersects[inter].object.name !== 'tracer') {
-                    this.createImpactEffect(intersects[inter].point);
-                }
-                if (intersects[inter].object.name === 'enemy') {
-                    return intersects[inter];
-                }
-            }
-        }
-
-        // If no hit
-        return null;
     }
 
-    
+
 
     createBulletTracer(direction) {
 
