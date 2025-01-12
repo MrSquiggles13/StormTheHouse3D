@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { HealthBar } from '../../components/Healthbar.js';
+import HealthBar from '../../components/Healthbar.js';
 
 export default class Wall {
     constructor() {

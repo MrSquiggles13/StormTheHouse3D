@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import "https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.umd.js";
+import * as TWEEN from 'tween';
 import Weapon from "./Weapon.js"
 
 

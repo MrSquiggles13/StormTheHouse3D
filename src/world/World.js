@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import Player from './objects/Player.js';
 import Ground from './objects/static/Ground.js';
-import OrbitControls from 'three/addons/controls/OrbitControls.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import Watchtower from './objects/static/Watchtower.js';
 import Skybox from './objects/static/Skybox.js';
 import Wall from './objects/static/Wall.js';
@@ -112,7 +112,7 @@ export default class World {
 
         // Set up the scroll event listener
         window.addEventListener('wheel', (e) => {
-            if (this.activeCamera === this.freeCamera) return;            
+            if (this.activeCamera === this.freeCamera) return;
             this.player.smoothZoom(e.deltaY)
         });
 
@@ -138,7 +138,7 @@ export default class World {
         this.enemySpawner.update(delta, currentTime);
 
         TWEEN.update()
-    
+
     }
 
     onMouseMove(event) {

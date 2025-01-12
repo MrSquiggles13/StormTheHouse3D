@@ -1,4 +1,4 @@
-import EventEmitter from 'events';
+import { EventEmitter } from 'events';
 
 export default class Entity extends EventEmitter {
     constructor() {

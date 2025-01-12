@@ -6,6 +6,7 @@ import Entity from './Entity.js';
 
 export default class Player extends Entity {
     constructor(camera) {
+        super();
         this.camera = camera;
 
         this.money = 0;

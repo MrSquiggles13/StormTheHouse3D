@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-class HealthBar {
+export default class HealthBar {
     constructor(targetObject, health, width = 1, height = 0.1) {
         this.targetObject = targetObject;
 
@@ -46,5 +46,3 @@ class HealthBar {
         }
     }
 }
-
-export { HealthBar };

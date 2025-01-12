@@ -1,0 +1,92 @@
+body {
+    margin: 0;
+    overflow: hidden;
+    /* Prevent scrolling */
+}
+
+canvas {
+    display: block;
+    /* Ensures canvas fills the screen without gaps */
+}
+
+#reticle {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 4px;
+    height: 4px;
+    background-color: transparent;
+    border: 2px solid black;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+#scope-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.2);
+    /* Semi-transparent black background */
+    display: none;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    z-index: 999;
+    transition: opacity 0.5s ease;
+}
+
+#scope-overlay img {
+    width: 50%;
+    /* Adjust to the size of the scope image */
+    height: auto;
+    pointer-events: none;
+    object-fit: contain;
+    /* Prevents distortion of the scope image */
+}
+
+/* Create a circular dark area around the scope */
+#scope-overlay::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    /* Dark background */
+    mask: radial-gradient(circle, transparent 45%, black 40%);
+    /* Circular cut-out effect */
+    -webkit-mask: radial-gradient(circle, transparent 45%, black 40%);
+    /* For Safari */
+}
+
+#game-ui {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: white;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    z-index: 100;
+    /* Ensure it's above the 3D scene */
+}
+
+#bullet-count,
+#money {
+    margin-bottom: 10px;
+}
+
+#wall-health {
+    width: 200px;
+    height: 20px;
+    background-color: rgba(255, 0, 0, 0.5);
+}
+
+#health-bar {
+    width: 100%;
+    height: 100%;
+    background-color: green;
+}
