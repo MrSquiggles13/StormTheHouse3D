@@ -12,8 +12,12 @@ export default class Enemy extends Entity {
         this.material = this.originalMaterial; // Start with original material
         this.mesh = new THREE.Mesh(geometry, this.material);
 
-        this.mesh.name = "enemy";
+        const bodyGeometry = new THREE.BoxGeometry(0.5, 2.8, 0.5); // Adjust dimensions as needed
+        const bodyMaterial = new THREE.MeshBasicMaterial({ visible: false }); // Invisible collider
+        this.bodyCollider = new THREE.Mesh(bodyGeometry, bodyMaterial);
+        this.mesh.add(this.bodyCollider);
 
+        this.mesh.name = "enemy";
         this.mesh.enemy = this;
 
         // Start position for the enemy
@@ -24,6 +28,7 @@ export default class Enemy extends Entity {
         // Movement speed
         this.speed = 0.08;
         this.direction = new THREE.Vector3(0, 0, 1).normalize();
+        this.velocity = new THREE.Vector3();
 
         // Timer for damage
         this.lastDamageTime = 0;  // Time of last damage

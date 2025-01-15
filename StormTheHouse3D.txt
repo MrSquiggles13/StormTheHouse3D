@@ -89,7 +89,7 @@ FINISHED:
 
 CURRENT:
     - decouple: refactor files to be more modular coherent and consistent
-        - scene only handled by World "Where am I putting you, How do I make you?"
+        - scene only handled by World "Where am I putting you, How do I make you?" *DONE*
         - camera only handled by player "What am I looking at? How do I interact with the World?"
         - player controls characters isn't character themselves "Who am I controlling and what posessions do I have?"
         - static objects "Here is my structure and my position"

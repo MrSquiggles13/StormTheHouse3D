@@ -13,12 +13,14 @@ export default class Player extends Entity {
         this.money_ui = document.getElementById("money")
         this.money_ui.innerText = `Money: ${this.money}`
 
+        this.height = 2
+
         // Capsule geometry for the player
-        this.geometry = new THREE.CapsuleGeometry(0.5, 3, 4, 8);
+        this.geometry = new THREE.CapsuleGeometry(0.5, this.height, 4, 8);
         this.material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
         this.mesh = new THREE.Mesh(this.geometry, this.material);
 
-        const bodyGeometry = new THREE.BoxGeometry(0.5, 2.8, 0.5); // Adjust dimensions as needed
+        const bodyGeometry = new THREE.BoxGeometry(0.5, 1.8, 0.5); // Adjust dimensions as needed
         const bodyMaterial = new THREE.MeshBasicMaterial({ visible: false }); // Invisible collider
         this.bodyCollider = new THREE.Mesh(bodyGeometry, bodyMaterial);
         this.mesh.add(this.bodyCollider);
@@ -61,8 +63,11 @@ export default class Player extends Entity {
         })
 
         this.on('enemy-hit', (enemy) => {
-            console.log("enemy hit")
             enemy.takeDamage(this.equippedWeapon.bulletDamage);
+        })
+
+        this.on("collision", (entity) => {
+            this.velocity.set(0, 0, 0);
         })
 
     }
@@ -191,7 +196,7 @@ export default class Player extends Entity {
         this.equippedWeapon.reload()
     }
 
-    update(delta, watchtower) {
+    update(delta) {
         const forward = new THREE.Vector3(0, 0, -1).applyEuler(this.yawObject.rotation);
         const right = new THREE.Vector3(1, 0, 0).applyEuler(this.yawObject.rotation);
 
@@ -216,10 +221,6 @@ export default class Player extends Entity {
         // Apply velocity to the player mesh's position
         this.mesh.position.add(this.velocity);
 
-        // Check for collisions with the watchtower walls
-        watchtower.checkPlayerCollisionWalls(this);
-        watchtower.checkPlayerCollisionPlatform(this);
-
         this.equippedWeapon.update()
 
         const scopeOverlay = document.getElementById('scope-overlay');
@@ -238,14 +239,6 @@ export default class Player extends Entity {
             }, 500);
         }
         this.camera.updateProjectionMatrix();
-
-        // Reset velocity after collision to prevent sliding
-        this.velocity.set(0, 0, 0);
-
-        // Prevent player from falling below the ground
-        if (this.mesh.position.y < 0.5) {
-            this.mesh.position.y = 0.5;
-        }
     }
 
 }

@@ -52,7 +52,7 @@ export default class EnemyHandler extends Entity {
 
         const enemy = new Enemy(spawnPosition);
         this.enemies.push(enemy);
-        this.emit('add', enemy.mesh);
+        this.emit('add', enemy);
     }
 
     // Update function for spawning waves
@@ -76,7 +76,7 @@ export default class EnemyHandler extends Entity {
             }
 
             if (enemy.health <= 0) {
-                this.emit('remove', enemy.mesh); //
+                this.emit('remove', enemy); //
                 this.enemies.splice(index, 1);
             }
     

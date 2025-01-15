@@ -80,14 +80,13 @@ export default class Weapon extends Entity {
         const tracerDirection = new THREE.Vector3();
         tracerDirection.copy(direction).normalize();
 
-        // Create a tracer mesh (a small white line)
-        const tracerGeometry = new THREE.BufferGeometry().setFromPoints([
+        const tracer = new Entity();
+
+        tracer.mesh = new THREE.Line(new THREE.BufferGeometry().setFromPoints([
             barrelTipWorldPosition,
             barrelTipWorldPosition.clone().add(tracerDirection.multiplyScalar(100)) // Extend tracer length
-        ]);
+        ]), new THREE.LineBasicMaterial({ color: 0xffffff }));
 
-        const tracerMaterial = new THREE.LineBasicMaterial({ color: 0xffffff });
-        const tracer = new THREE.Line(tracerGeometry, tracerMaterial);
         tracer.name = "tracer";
 
         this.emit('add', tracer);
@@ -99,13 +98,15 @@ export default class Weapon extends Entity {
     }
 
     createImpactEffect(point) {
-        const geometry = new THREE.SphereGeometry(0.1, 8, 8);
-        const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-        const impact = new THREE.Mesh(geometry, material);
+        const impact = new Entity();
+        impact.mesh = new THREE.Mesh(
+            new THREE.SphereGeometry(0.1, 8, 8), 
+            new THREE.MeshBasicMaterial({ color: 0xff0000 })
+        );
 
-        impact.name = "impact";
+        impact.mesh.name = "impact";
+        impact.mesh.position.copy(point);
 
-        impact.position.copy(point);
         this.emit('add', impact);
 
         // Remove the impact effect after a short time
@@ -114,7 +115,8 @@ export default class Weapon extends Entity {
 
     createMuzzleFlash() {
         // Create the muzzle flash
-        const flash = new THREE.Mesh(
+        const flash = new Entity();
+        flash.mesh = new THREE.Mesh(
             new THREE.SphereGeometry(0.1, 16, 16),
             new THREE.MeshBasicMaterial({ color: 0xffa500 })
         );
@@ -122,7 +124,7 @@ export default class Weapon extends Entity {
         // Position the flash at the barrel tip
         const barrelTipWorldPosition = new THREE.Vector3();
         this.barrelTip.getWorldPosition(barrelTipWorldPosition);
-        flash.position.copy(barrelTipWorldPosition);
+        flash.mesh.position.copy(barrelTipWorldPosition);
 
         this.emit('add', flash);
 

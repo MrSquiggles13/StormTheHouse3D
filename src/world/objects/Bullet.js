@@ -8,6 +8,8 @@ export default class Bullet {
         );
         this.mesh.position.copy(position);
         this.speed = 10;
+
+        this.velocity = new THREE.Vector3();
     }
 
     update(delta) {

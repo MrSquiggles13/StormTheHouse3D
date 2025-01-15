@@ -13,6 +13,14 @@ export default class PhysicsHandler extends Entity { // movement, gravity, and c
         this.on('shot', (raycaster) => this.handleShot(raycaster));
     }
 
+    addEntity(entity) {
+        this.entities.push(entity);
+    }
+
+    removeEntity(entity) {
+        this.entities = this.entities.filter(e => e !== entity);
+    }
+
     handleShot(raycaster) {
         const intersects = raycaster.intersectObjects(this.scene.children, true); // sent up to collisions
         
@@ -29,5 +37,35 @@ export default class PhysicsHandler extends Entity { // movement, gravity, and c
         }
     }
 
+    checkCollision(entity1, entity2) {
+        const e1box = new THREE.Box3().setFromObject(entity1.mesh);
+        const e2box = new THREE.Box3().setFromObject(entity2.mesh);
+
+        if (e1box.intersectsBox(e2box)) {
+            this.emit('collision', entity1);
+        }
+    }
+
+    update(delta) {
+
+
+        // Apply gravity to all entities
+        this.entities.forEach(entity => {
+            if(entity.velocity){
+                entity.velocity.add(this.gravity.clone().multiplyScalar(delta)); // Add gravity to velocity
+                entity.mesh.position.add(entity.velocity.clone().multiplyScalar(delta)); // Apply velocity to position
+            }
+        });
+
+        //check for collisions
+        for (let i = 0; i < this.entities.length; i++) {
+            for (let j = i + 1; j < this.entities.length; j++) {
+                if (this.entities[i].mesh.position.distanceTo(this.entities[j].mesh.position) < 30) {
+                    this.checkCollision(this.entities[i], this.entities[j]);
+                }
+            }    
+        }
+
+    }
 
 }

@@ -21,6 +21,8 @@ export default class World extends Entity {
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         container.appendChild(this.renderer.domElement);
 
+        this.physicsHandler = new PhysicsHandler(this.scene)
+
         this.activeCamera = this.camera;
 
         this.freeCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -44,27 +46,30 @@ export default class World extends Entity {
         this.scene.background = this.skybox.texture;
 
         // Initialize player and enemies
-        this.player = new Player(this.scene, this.camera);
+        this.player = new Player(this.camera);
         this.scene.add(this.player.mesh);
+        this.physicsHandler.addEntity(this.player);
 
         // Add ground
         this.ground = new Ground();
         this.scene.add(this.ground.mesh);
+        this.physicsHandler.addEntity(this.ground);
 
         this.watchtower = new Watchtower();
-        this.watchtower.towerGroup.position.z = (this.ground.mesh.length / 2) - 10;
-        this.scene.add(this.watchtower.towerGroup);
+        this.watchtower.mesh.position.z = (this.ground.mesh.length / 2) - 10;
+        this.scene.add(this.watchtower.mesh);
+        this.physicsHandler.addEntity(this.watchtower);
 
-        this.player.mesh.position.y = this.watchtower.platformBox.max.y + this.player.mesh.scale.y + 0.2;
-        this.player.mesh.position.z = this.watchtower.towerGroup.position.z;
+        this.player.mesh.position.y = this.watchtower.platformBox.max.y + this.player.height;
+        this.player.mesh.position.z = this.watchtower.mesh.position.z;
 
         this.wall = new Wall();
         this.wall.mesh.position.z = (this.ground.mesh.length / 2) - 30;
         this.wall.mesh.position.y = 1.5
         this.scene.add(this.wall.mesh);
+        this.physicsHandler.addEntity(this.wall);
 
         this.enemySpawner = new EnemyHandler(this.wall);
-        this.physicsHandler = new PhysicsHandler(this.scene)
 
         this.addEventListeners();
 
@@ -126,23 +131,31 @@ export default class World extends Entity {
             this.renderer.setSize(window.innerWidth, window.innerHeight);
         });
 
-        this.on('add', (mesh) => this.scene.add(mesh));
-        this.on('remove', (mesh) => this.scene.remove(mesh));
+        this.on('add', (entity) => {
+            this.scene.add(entity.mesh)
+            this.physicsHandler.addEntity(entity);
+        });
+        this.on('remove', (entity) => {
+            this.scene.remove(entity.mesh)
+            this.physicsHandler.removeEntity(entity);
+        });
 
     }
 
     update() {
         const delta = this.clock.getDelta();
 
-        if (this.activeCamera === this.camera) {
-            this.player.update(delta, this.watchtower);
-        } else {
+        if (this.activeCamera !== this.camera) {
             this.freeCameraControls.update();
         }
+        
+        this.player.update(delta, this.watchtower);
 
         const currentTime = performance.now() / 1000;  // Current time in seconds
 
         this.enemySpawner.update(delta, currentTime);
+
+        this.physicsHandler.update(delta);
 
         TWEEN.update({preserve: false})
 

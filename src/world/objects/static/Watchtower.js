@@ -1,17 +1,19 @@
 import * as THREE from 'three';
+import Entity from '../Entity';
 
-export default class Watchtower {
+export default class Watchtower extends Entity {
     constructor() {
+        super()
         // Create the tower group
-        this.towerGroup = new THREE.Group();
+        this.mesh = new THREE.Group();
 
         // Create the platform
         const platformGeometry = new THREE.BoxGeometry(5, 0.5, 5);
         const platformMaterial = new THREE.MeshStandardMaterial({ color: 0x8b4513 });
-        const platform = new THREE.Mesh(platformGeometry, platformMaterial);
-        platform.position.y = 20; // Position the platform at height
-        platform.receiveShadow = true;
-        this.towerGroup.add(platform);
+        this.platform = new THREE.Mesh(platformGeometry, platformMaterial);
+        this.platform.position.y = 20; // Position the platform at height
+        this.platform.receiveShadow = true;
+        this.mesh.add(this.platform);
 
         // Create the legs
         const legGeometry = new THREE.BoxGeometry(0.2, 20, 0.2);
@@ -31,7 +33,7 @@ export default class Watchtower {
             leg.position.set(x, y, z);
             leg.castShadow = true;
             this.legs.push(leg);
-            this.towerGroup.add(leg);
+            this.mesh.add(leg);
         }
 
         // Add walls (simple boxes for now)
@@ -52,75 +54,74 @@ export default class Watchtower {
             wall.position.set(x, y, z);
             if (z === 0) wall.rotation.y = Math.PI / 2;
             wall.castShadow = true;
-            this.towerGroup.add(wall);
+            this.mesh.add(wall);
             this.walls.push(wall);
         }
-        
-        // Collision box for the platform
-        this.platformBox = new THREE.Box3().setFromObject(platform);
+
+        this.on('collision', (entity) => {
+            if (entity == this) return
+            if (entity.bodyCollider){
+                console.log("Collided with watchtower", entity)
+                this.checkCollisionWalls(entity);
+                this.checkCollisionPlatform(entity);
+                //this.checkCollisionLegs(entity);
+            }
+
+        })
     }
 
-    // Check if the player is on the platform
-    checkPlayerCollisionPlatform(player) {
-        const playerBox = new THREE.Box3().setFromObject(player.bodyCollider);
+    // Check if the entity is on the platform
+    checkCollisionPlatform(entity) {
+        const entityBox = new THREE.Box3().setFromObject(entity.bodyCollider);
+        const platformBox = new THREE.Box3().setFromObject(this.platform);
     
-        if (this.platformBox.intersectsBox(playerBox)) {
-            // Check if the player is above the platform and falling onto it
-            if (player.velocity.y < 0 && playerBox.min.y >= this.platformBox.max.y) {
-                // Snap player to the platform
-                player.mesh.position.y = this.platformBox.max.y;
-                player.velocity.y = 0;
-                return true;
+        if (platformBox.intersectsBox(entityBox)) {
+            console.log("Collision with platform");
+            // Check if the entity is above the platform and falling onto it
+
+            const penetrationDepthY = Math.min(platformBox.max.y - entityBox.min.y, entityBox.max.y - platformBox.min.y);
+            
+            if (entity.mesh.position.y > platformBox.getCenter(new THREE.Vector3()).y) {
+                console.log("Stay on top")
+                // Snap entity to the platform
+                entity.mesh.position.y += penetrationDepthY;
+                entity.velocity.y = 0;
+            } else {
+                console.log("Prevent jumping through")
+                entity.mesh.position.y = platformBox.min.y;
+                entity.velocity.y = -entity.velocity.y;
             }
         }
-        return false;
     }
 
-    getCollisionNormal(wallBox, playerBox) {
-        const normal = new THREE.Vector3();
-    
-        // Calculate the minimum translation distance to resolve the overlap
-        const xOverlap = Math.min(wallBox.max.x - playerBox.min.x, playerBox.max.x - wallBox.min.x);
-        const zOverlap = Math.min(wallBox.max.z - playerBox.min.z, playerBox.max.z - wallBox.min.z);
-    
-        // Determine the primary axis of collision
-        if (xOverlap < zOverlap) {
-            normal.set(playerBox.min.x < wallBox.min.x ? -1 : 1, 0, 0);
-        } else {
-            normal.set(0, 0, playerBox.min.z < wallBox.min.z ? -1 : 1);
-        }
-    
-        return normal;
-    }
-
-    checkPlayerCollisionWalls(player) {
-        const playerBox = new THREE.Box3().setFromObject(player.bodyCollider);
+    checkCollisionWalls(entity) {
+        const entityBox = new THREE.Box3().setFromObject(entity.bodyCollider);
     
         for (const wall of this.walls) {
             const wallBox = new THREE.Box3().setFromObject(wall);
     
-            if (wallBox.intersectsBox(playerBox)) {
+            if (wallBox.intersectsBox(entityBox)) {
                 // Calculate penetration depth along each axis
-                const penetrationDepthX = Math.min(wallBox.max.x - playerBox.min.x, playerBox.max.x - wallBox.min.x);
-                const penetrationDepthZ = Math.min(wallBox.max.z - playerBox.min.z, playerBox.max.z - wallBox.min.z);
+                const penetrationDepthX = Math.min(wallBox.max.x - entityBox.min.x, entityBox.max.x - wallBox.min.x);
+                const penetrationDepthZ = Math.min(wallBox.max.z - entityBox.min.z, entityBox.max.z - wallBox.min.z);
     
                 // Determine which axis to adjust based on the smallest penetration depth
                 if (penetrationDepthX < penetrationDepthZ) {
-                    // Adjust player position along the X-axis
-                    if (player.mesh.position.x > wallBox.getCenter(new THREE.Vector3()).x) {
-                        player.mesh.position.x += penetrationDepthX;
+                    // Adjust entity position along the X-axis
+                    if (entity.mesh.position.x > wallBox.getCenter(new THREE.Vector3()).x) {
+                        entity.mesh.position.x += penetrationDepthX;
                     } else {
-                        player.mesh.position.x -= penetrationDepthX;
+                        entity.mesh.position.x -= penetrationDepthX;
                     }
-                    player.velocity.x = 0;
+                    entity.velocity.x = 0;
                 } else {
-                    // Adjust player position along the Z-axis
-                    if (player.mesh.position.z > wallBox.getCenter(new THREE.Vector3()).z) {
-                        player.mesh.position.z += penetrationDepthZ;
+                    // Adjust entity position along the Z-axis
+                    if (entity.mesh.position.z > wallBox.getCenter(new THREE.Vector3()).z) {
+                        entity.mesh.position.z += penetrationDepthZ;
                     } else {
-                        player.mesh.position.z -= penetrationDepthZ;
+                        entity.mesh.position.z -= penetrationDepthZ;
                     }
-                    player.velocity.z = 0;
+                    entity.velocity.z = 0;
                 }
             }
         }
