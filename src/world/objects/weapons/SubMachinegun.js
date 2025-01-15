@@ -4,8 +4,8 @@ import Weapon from "./Weapon.js"
 
 
 export default class SubMachinegun extends Weapon {
-    constructor(scene, camera) {
-        super(scene, camera, { maxBullets: 32, bulletSpeed: 7, bulletDamage: 1, reloadTime: 1.5, shootCooldown: 0.05, fullAuto: true, spread: 0.03 })
+    constructor(camera) {
+        super(camera, { maxBullets: 32, bulletSpeed: 7, bulletDamage: 1, reloadTime: 1.5, shootCooldown: 0.05, fullAuto: true, spread: 0.03 })
 
         // SMG components (basic mesh for now)
         const body = new THREE.BoxGeometry(0.1, 0.1, 0.3);

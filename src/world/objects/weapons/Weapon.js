@@ -2,9 +2,8 @@ import * as THREE from 'three';
 import Entity from '../Entity';
 
 export default class Weapon extends Entity {
-    constructor(scene, camera, { maxBullets, bulletSpeed, bulletDamage, reloadTime, shootCooldown, fullAuto = false, spread = 0, canZoom = false, zoomFOV = 0 }) {
+    constructor(camera, { maxBullets, bulletSpeed, bulletDamage, reloadTime, shootCooldown, fullAuto = false, spread = 0, canZoom = false, zoomFOV = 0 }) {
         super()
-        this.scene = scene
         this.camera = camera;
 
         // Shooting variables
@@ -54,7 +53,7 @@ export default class Weapon extends Entity {
         ).normalize();
 
         raycaster.ray.direction.copy(spreadDirection);
-        
+
         this.emit('shot', raycaster);
 
         this.createMuzzleFlash();
@@ -91,12 +90,11 @@ export default class Weapon extends Entity {
         const tracer = new THREE.Line(tracerGeometry, tracerMaterial);
         tracer.name = "tracer";
 
-        // Add the tracer to the scene
-        this.scene.add(tracer);
+        this.emit('add', tracer);
 
         // Remove the tracer after a short duration
         setTimeout(() => {
-            this.scene.remove(tracer);
+            this.emit('remove', tracer);
         }, 100);
     }
 
@@ -108,10 +106,10 @@ export default class Weapon extends Entity {
         impact.name = "impact";
 
         impact.position.copy(point);
-        this.scene.add(impact);
+        this.emit('add', impact);
 
         // Remove the impact effect after a short time
-        setTimeout(() => this.scene.remove(impact), 500);
+        setTimeout(() => this.emit('remove', impact), 500);
     }
 
     createMuzzleFlash() {
@@ -126,11 +124,11 @@ export default class Weapon extends Entity {
         this.barrelTip.getWorldPosition(barrelTipWorldPosition);
         flash.position.copy(barrelTipWorldPosition);
 
-        this.scene.add(flash);
+        this.emit('add', flash);
 
         // Remove the flash after a short time
         setTimeout(() => {
-            this.scene.remove(flash);
+            this.emit('remove', flash);
         }, 20); // Muzzle flash duration
     }
 
@@ -170,7 +168,7 @@ export default class Weapon extends Entity {
         // Remove bullets that are too far away
         this.bullets = this.bullets.filter(bullet => {
             if (bullet.tracer.position.length() > 100) {
-                this.scene.remove(bullet);
+                this.emit('remove', bullet);
                 return false;
             }
             return true;

@@ -5,7 +5,7 @@ import SubMachinegun from './weapons/SubMachinegun.js';
 import Entity from './Entity.js';
 
 export default class Player extends Entity {
-    constructor(scene, camera) {
+    constructor(camera) {
         super();
         this.camera = camera;
 
@@ -44,7 +44,7 @@ export default class Player extends Entity {
         this.isMovingLeft = false;
         this.isMovingRight = false;
 
-        this.weapons = { rifle: new Rifle(scene, this.camera), pistol: new Pistol(scene, this.camera), smg: new SubMachinegun(scene, this.camera) };
+        this.weapons = { rifle: new Rifle(this.camera), pistol: new Pistol(this.camera), smg: new SubMachinegun(this.camera) };
         this.equippedWeapon = this.weapons["pistol"]
         this.isShooting = false
 

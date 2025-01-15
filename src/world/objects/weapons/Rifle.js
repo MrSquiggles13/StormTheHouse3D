@@ -4,8 +4,8 @@ import Weapon from "./Weapon.js"
 
 export default class Rifle extends Weapon {
 
-    constructor(scene, camera) {
-        super(scene, camera, {maxBullets: 8, bulletSpeed: 5, bulletDamage: 4, reloadTime: 2, shootCooldown: 1, canZoom: true, zoomFOV: 40})
+    constructor(camera) {
+        super(camera, {maxBullets: 8, bulletSpeed: 5, bulletDamage: 4, reloadTime: 2, shootCooldown: 1, canZoom: true, zoomFOV: 40})
 
         // Rifle components
         const stock = new THREE.BoxGeometry(0.3, 0.1, 0.05);

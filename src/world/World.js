@@ -33,7 +33,7 @@ export default class World extends Entity {
         this.freeCameraControls.screenSpacePanning = false;
 
         // Add lights
-        const light = new THREE.AmbientLight(0x9f9f9f, 0.5);
+        const light = new THREE.AmbientLight(0xffffff, 0.8);
         this.scene.add(light);
 
         const directionalLight = new THREE.DirectionalLight(0xffffff, 1);

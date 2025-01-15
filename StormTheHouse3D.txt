@@ -63,7 +63,7 @@ world should handle instantiating helpers and placing objects into the world
 
 physics should be handled centrally by a physics handler
 
-entities (objects) should have an extendable class and be conherent with the physics handler
+entities (objects) should have an extendable class and be conherent with the physics handler*DONE*
 entities should also be instantiated with position and velocity
 
 FINISHED:
@@ -85,6 +85,8 @@ FINISHED:
     - ~BUG~ Player's current weapon a part of collision mesh and interferes with movement and collisions *FIXED*
     - Github you bitch *DONE*
 
+    - convert project to use Vite *DONE*
+
 CURRENT:
     - decouple: refactor files to be more modular coherent and consistent
         - scene only handled by World "Where am I putting you, How do I make you?"
@@ -93,8 +95,12 @@ CURRENT:
         - static objects "Here is my structure and my position"
         - kinematic objects "Same as static yet here is how I move"
 
+    - dont explicitly pass objects to other objects i.e. wall to enemy to see collision
     - physics handler: add gravity and restructure the collision detections
+
     - reload anims: add mag that falls out and new one inserted
+
+    - ~BUG~ fix lighting: lighting is now dim after switching to vite, most likely threejs is using newer version
     
 
 UP NEXT:
@@ -106,6 +112,8 @@ UP NEXT:
     - structures & landscape: more dynamic ground and redo wall to have look throughs and better texture
 
     - menus: starting menu game over menu and a buy menu
+
+    - weapons: RangedWeapon and MeeleeWeapon classes?
 
 
 Multiplayer?:
