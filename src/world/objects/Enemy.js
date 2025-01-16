@@ -1,6 +1,9 @@
 import * as THREE from 'three';
 import HealthBar from '../components/Healthbar.js';
 import Entity from './Entity.js';
+import Wall from './static/Wall.js';
+import Player from './Player.js';
+import Ground from './static/Ground.js';
 
 export default class Enemy extends Entity {
     constructor(position) {
@@ -38,6 +41,18 @@ export default class Enemy extends Entity {
 
         this.health = 5;
         this.healthBar = new HealthBar(this.mesh, this.health, 2, 0.5);
+
+        this.on('collision', (entity) => {
+            if (entity == this) return;
+
+            if (entity instanceof Wall) {}
+
+            if (entity instanceof Player) {}
+
+            if (entity instanceof Ground) {
+                this.velocity.y = 0;
+            }
+        })
     }
 
     // Method to move toward the target (the wall)

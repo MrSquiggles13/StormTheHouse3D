@@ -23,16 +23,18 @@ export default class World extends Entity {
 
         this.physicsHandler = new PhysicsHandler(this.scene)
 
-        this.activeCamera = this.camera;
+        
 
         this.freeCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        this.freeCamera.position.set(10, 10, 10);
+        this.freeCamera.position.set(5, 20, 120);
         this.freeCamera.lookAt(0, 0, 0);
 
         this.freeCameraControls = new OrbitControls(this.freeCamera, this.renderer.domElement);
         this.freeCameraControls.enableDamping = true;
         this.freeCameraControls.dampingFactor = 0.05;
         this.freeCameraControls.screenSpacePanning = false;
+
+        this.activeCamera = this.freeCamera;
 
         // Add lights
         const light = new THREE.AmbientLight(0xffffff, 0.8);
@@ -60,7 +62,7 @@ export default class World extends Entity {
         this.scene.add(this.watchtower.mesh);
         this.physicsHandler.addEntity(this.watchtower);
 
-        this.player.mesh.position.y = this.watchtower.platformBox.max.y + this.player.height;
+        this.player.mesh.position.y = this.watchtower.platform.position.y + this.player.height;
         this.player.mesh.position.z = this.watchtower.mesh.position.z;
 
         this.wall = new Wall();

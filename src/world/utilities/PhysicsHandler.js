@@ -8,7 +8,7 @@ export default class PhysicsHandler extends Entity { // movement, gravity, and c
         this.scene = scene;
 
         this.entities = [];
-        this.gravity = new THREE.Vector3(0, -9.8, 0);
+        this.gravity = new THREE.Vector3(0, -98, 0);
 
         this.on('shot', (raycaster) => this.handleShot(raycaster));
     }
@@ -60,7 +60,7 @@ export default class PhysicsHandler extends Entity { // movement, gravity, and c
         //check for collisions
         for (let i = 0; i < this.entities.length; i++) {
             for (let j = i + 1; j < this.entities.length; j++) {
-                if (this.entities[i].mesh.position.distanceTo(this.entities[j].mesh.position) < 30) {
+                if (this.entities[i].mesh.position.distanceTo(this.entities[j].mesh.position) < 20) {
                     this.checkCollision(this.entities[i], this.entities[j]);
                 }
             }    

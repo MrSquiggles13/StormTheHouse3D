@@ -45,7 +45,7 @@ export default class EnemyHandler extends Entity {
     spawnEnemy() {
         const x = Math.random() * 20 - 10; // Fixed X position (could be adjusted as per your game design)
         const z = -20; // Random Z between -10 and 10
-        const y = 1.5; // Ensure it's not below ground level
+        const y = 2.5; // Ensure it's not below ground level
         
         // Ensure no overlap
         const spawnPosition = new THREE.Vector3(x, y, z);

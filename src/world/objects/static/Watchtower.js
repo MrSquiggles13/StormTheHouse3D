@@ -11,7 +11,7 @@ export default class Watchtower extends Entity {
         const platformGeometry = new THREE.BoxGeometry(5, 0.5, 5);
         const platformMaterial = new THREE.MeshStandardMaterial({ color: 0x8b4513 });
         this.platform = new THREE.Mesh(platformGeometry, platformMaterial);
-        this.platform.position.y = 20; // Position the platform at height
+        this.platform.set.y = 20; // Position the platform at height
         this.platform.receiveShadow = true;
         this.mesh.add(this.platform);
 
@@ -61,10 +61,9 @@ export default class Watchtower extends Entity {
         this.on('collision', (entity) => {
             if (entity == this) return
             if (entity.bodyCollider){
-                console.log("Collided with watchtower", entity)
                 this.checkCollisionWalls(entity);
                 this.checkCollisionPlatform(entity);
-                //this.checkCollisionLegs(entity);
+                this.checkCollisionLegs(entity);
             }
 
         })
@@ -76,20 +75,15 @@ export default class Watchtower extends Entity {
         const platformBox = new THREE.Box3().setFromObject(this.platform);
     
         if (platformBox.intersectsBox(entityBox)) {
-            console.log("Collision with platform");
-            // Check if the entity is above the platform and falling onto it
 
             const penetrationDepthY = Math.min(platformBox.max.y - entityBox.min.y, entityBox.max.y - platformBox.min.y);
             
             if (entity.mesh.position.y > platformBox.getCenter(new THREE.Vector3()).y) {
-                console.log("Stay on top")
                 // Snap entity to the platform
                 entity.mesh.position.y += penetrationDepthY;
                 entity.velocity.y = 0;
             } else {
-                console.log("Prevent jumping through")
-                entity.mesh.position.y = platformBox.min.y;
-                entity.velocity.y = -entity.velocity.y;
+                entity.mesh.position.y -= penetrationDepthY;
             }
         }
     }
@@ -117,6 +111,39 @@ export default class Watchtower extends Entity {
                 } else {
                     // Adjust entity position along the Z-axis
                     if (entity.mesh.position.z > wallBox.getCenter(new THREE.Vector3()).z) {
+                        entity.mesh.position.z += penetrationDepthZ;
+                    } else {
+                        entity.mesh.position.z -= penetrationDepthZ;
+                    }
+                    entity.velocity.z = 0;
+                }
+            }
+        }
+    }
+
+    checkCollisionLegs(entity) {
+        const entityBox = new THREE.Box3().setFromObject(entity.bodyCollider);
+    
+        for (const leg of this.legs) {
+            const legBox = new THREE.Box3().setFromObject(leg);
+    
+            if (legBox.intersectsBox(entityBox)) {
+                // Calculate penetration depth along each axis
+                const penetrationDepthX = Math.min(legBox.max.x - entityBox.min.x, entityBox.max.x - legBox.min.x);
+                const penetrationDepthZ = Math.min(legBox.max.z - entityBox.min.z, entityBox.max.z - legBox.min.z);
+    
+                // Determine which axis to adjust based on the smallest penetration depth
+                if (penetrationDepthX < penetrationDepthZ) {
+                    // Adjust entity position along the X-axis
+                    if (entity.mesh.position.x > legBox.getCenter(new THREE.Vector3()).x) {
+                        entity.mesh.position.x += penetrationDepthX;
+                    } else {
+                        entity.mesh.position.x -= penetrationDepthX;
+                    }
+                    entity.velocity.x = 0;
+                } else {
+                    // Adjust entity position along the Z-axis
+                    if (entity.mesh.position.z > legBox.getCenter(new THREE.Vector3()).z) {
                         entity.mesh.position.z += penetrationDepthZ;
                     } else {
                         entity.mesh.position.z -= penetrationDepthZ;
