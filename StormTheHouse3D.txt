@@ -1,0 +1,137 @@
+StormTheHouse3D
+
+Map:
+
+- Basic Landscape
+- Less tiles textures
+- Make Bodies of Water
+- Foliage that doesnt kill my computer
+- House model
+
+|----------------
+
+Menu:
+
+- Main menu *play *settings *progress?/statistics *quit
+- In game menu *settings *pause
+- buy menu *tabs for different upgrades 
+
+|------------------------
+
+Player:
+- watch tower/char model
+- mouse cursor crosshair (fires from watchtower)
+- free camera movement
+- can select unit to use to fire with
+- meelee spartan char ultimate that can charge out be used for a duration then is beamed up by aliens
+
+|-----------------------
+
+Weapons:
+- attachments (scopes, grips etc)
+- variable recoil and bullet spread
+
+|-----------------------
+
+Helpers:
+- have own weapons and gear
+- can be upgraded themselved or upgrade/trade out gear
+- can be individually controlled
+
+|-----------------------
+
+Enemy:
+
+- Stick figure models
+- Basic animations
+- Basic AI
+- Different enemy types
+
+|-------------------------
+
+Notes:
+when in free camera can shoot with watchtower main char only and select other characters, if highlighting something/someone
+
+start with watchtower, character, wall, basic enemies, first person only, no animations, no upgrades, no menu *DONE*
+
+bullet spread can be kind of like gravity where over time
+the bullet spread is reduced to zero but increases up to a threshold 
+
+player should have camera object since perspective is based on the player
+
+world should handle instantiating helpers and placing objects into the world**DONE**
+
+physics should be handled centrally by a physics handler**DONE**
+
+entities (objects) should have an extendable class and be conherent with the physics handler*DONE*
+entities should also be instantiated with position and velocity
+
+Multiplayer: have someone on other side trying to send troops towards you while you defend and do the same
+    - can equip minions and control them. When minions die they drop equipment (?maybe keep one or refund some etc)
+    - other minions or player (friend or foe) can pick up the equipment
+
+FINISHED:
+    - watchtower: giant block *DONE*
+    - player: basic capsule *DONE*
+    - gun: skinny cylinder *DONE* **added animation
+    - projectiles: tiny cylinder *DONE*
+    - enemies: basic capsule *DONE* **added waves and attack on wall
+    - landscape: flat rectangle *DONE*
+    - wall: thick upright rectangle *DONE*
+    - hit feedback: flashing when hit *DONE*
+    - aiming: can zoom in to ADS with scope overlay *DONE*
+    - skybox: added a, well, a skybox *DONE*
+    - health bar: added health bars for enemies and wall *DONE*
+    - UI: screen info for bullet capacity, money, and wall health *DONE*
+
+    - weapons: create an impl weapon class and create multiple weapons *DONE*
+    - ~BUG~ Impact decal interferes with hit markers for enemies *FIXED*
+    - ~BUG~ Player's current weapon a part of collision mesh and interferes with movement and collisions *FIXED*
+    - Github you bitch *DONE*
+
+    - convert project to use Vite *DONE*
+    - redo model creation in seperate editor instead of directly in three js (Blender?) **DONE** 
+            ~Just the watchtower but functionality still the same~
+    
+    - ~BUG~ fix lighting: lighting is now dim after switching to vite, most likely threejs is using newer version**FIXED**
+
+CURRENT:
+    - migrate over to an ECS architecture
+    - deprecate this repo and migrate to a new one to start with clean slate
+   
+
+UP NEXT:
+    - refactor how physics bodies are made and handled + how the entity class is implemented
+    - dont explicitly pass objects to other objects i.e. wall to enemy to see collision
+
+    - physics handler: add gravity and restructure the collision detections
+        - remove all old mechanics for physics**DONE**
+        - incorporate a system to pass three meshs and make physics Bodies**DONE**
+            - ~issue~ group mesh cannot orient the physics bodies in correct place without referencing the parent mesh**DONE**
+        - create collision detection for unique functionalities i.e. enemies attack a wall
+        - make kinematic bodied work with physics and controller (player or AI controlled)**DONE**
+
+    - decouple: refactor files to be more modular coherent and consistent
+        - scene only handled by World "Where am I putting you, How do I make you?" *DONE*
+        - camera only handled by player "What am I looking at? How do I interact with the World?"
+        - player controls characters isn't character themselves "Who am I controlling and what posessions do I have?"
+        - static objects "Here is my structure and my position"
+        - kinematic objects "Same as static yet here is how I move"
+
+    - reload anims: add mag that falls out and new one inserted
+
+    - clubs: short fat cylinder w/ animation for basic enemy
+        - for meelee attack make a "window of collision" some kind of shape cast 
+    - enemies: create impl class for enemies, equip weapons, have dynamic stats etc
+    - add enemies: make some alternitive enemies, have a pool of atleast 3
+
+    - house: giant block readjust wall and tower to compinsate for angles
+    - structures & landscape: more dynamic ground and redo wall to have look throughs and better texture
+
+    - menus: starting menu game over menu and a buy menu
+
+    - weapons: RangedWeapon and MeeleeWeapon classes?
+
+
+
+
