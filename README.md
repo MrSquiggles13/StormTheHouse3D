@@ -1,2 +1,3 @@
 # StormTheHouse3D
-A Storm the House clone but in 3D using Three.js using an architectural implementation I designed off of ECS architecture
+A Storm the House clone but in 3D
+Technologies used, Three.js, Rapier.js, ECS-like architecture
