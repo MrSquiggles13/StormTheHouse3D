@@ -1,15 +1,14 @@
 {
-  "name": "stormthehouse3d",
+  "name": "space",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "devDependencies": {
-    "typescript": "~5.7.2",
     "vite": "^6.2.0"
   }
 }
